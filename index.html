@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DoItFree — How To Do Anything, For Free</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1208;
+      --cream: #fdf8f0;
+      --warm: #f5ede0;
+      --gold: #d4890a;
+      --gold-light: #f0b030;
+      --green: #2d6a4f;
+      --green-light: #52b788;
+      --rust: #c1440e;
+      --muted: #7a6e60;
+      --card-border: #e8ddd0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .logo span { color: var(--gold-light); }
+
+    nav { display: flex; gap: 1.5rem; align-items: center; }
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold-light); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, rgba(212,137,10,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse at 10% 80%, rgba(45,106,79,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--ink);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      max-width: 700px;
+      margin: 0 auto 1rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero p {
+      color: #b0a898;
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      font-size: 1.05rem;
+    }
+    .search-bar {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+      border: 2px solid var(--gold);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 0.85rem 1.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      background: #2a2318;
+      color: var(--cream);
+      border: none;
+      outline: none;
+    }
+    .search-bar input::placeholder { color: #6a6050; }
+    .search-bar button {
+      padding: 0.85rem 1.5rem;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-bar button:hover { background: var(--gold-light); }
+
+    /* ── CATEGORIES ── */
+    .categories {
+      padding: 3.5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+    .cat-card {
+      background: var(--warm);
+      border: 1.5px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .cat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold);
+      box-shadow: 0 6px 20px rgba(212,137,10,0.15);
+    }
+    .cat-icon { font-size: 2rem; }
+    .cat-name { font-weight: 600; font-size: 0.88rem; }
+    .cat-count { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── GUIDES GRID ── */
+    .guides-section {
+      background: var(--warm);
+      padding: 4rem 2rem;
+      border-top: 1.5px solid var(--card-border);
+      border-bottom: 1.5px solid var(--card-border);
+    }
+    .guides-inner { max-width: 1100px; margin: 0 auto; }
+    .guides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .guide-card {
+      background: var(--cream);
+      border: 1.5px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .guide-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(26,18,8,0.12);
+    }
+    .guide-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(135deg, var(--card-border) 0%, #ddd0be 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-img-placeholder {
+      width: 100%;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+    }
+    .guide-body { padding: 1.2rem; }
+    .guide-cat {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.4rem;
+    }
+    .guide-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+    .guide-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    .guide-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .guide-steps {
+      background: var(--warm);
+      border: 1px solid var(--card-border);
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .guide-difficulty {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .easy { background: var(--green-light); }
+    .medium { background: var(--gold); }
+    .hard { background: var(--rust); }
+
+    /* ── FEATURED ARTICLE ── */
+    .featured {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .featured-inner {
+      background: var(--ink);
+      border-radius: 14px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 360px;
+    }
+    .featured-text {
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .featured-text .guide-cat { color: var(--gold-light); }
+    .featured-text h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 900;
+      color: var(--cream);
+      margin: 0.5rem 0 1rem;
+      line-height: 1.2;
+    }
+    .featured-text p { color: #b0a898; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .btn-read {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      width: fit-content;
+      transition: background 0.2s;
+    }
+    .btn-read:hover { background: var(--gold-light); }
+    .featured-visual {
+      background: linear-gradient(135deg, #2d3a1a 0%, #1e2d1a 50%, #0f1a0f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+    }
+
+    /* ── ARTICLE PAGE OVERLAY ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,18,8,0.6);
+      z-index: 200;
+      backdrop-filter: blur(3px);
+    }
+    .overlay.open { display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+    .article-modal {
+      background: var(--cream);
+      max-width: 720px;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      margin: auto;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+    .modal-header {
+      background: var(--ink);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      color: var(--cream);
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--cream);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.2rem 0.5rem;
+    }
+    .modal-body { padding: 2rem; }
+    .modal-body .guide-cat { margin-bottom: 0.8rem; font-size: 0.78rem; }
+    .modal-intro { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.7; }
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.8rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+    }
+    .step-content h3 { font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
+    .step-content p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .tip-box {
+      background: #edfaf2;
+      border-left: 4px solid var(--green-light);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      margin-top: 2rem;
+      font-size: 0.88rem;
+      color: var(--green);
+    }
+    .tip-box strong { display: block; margin-bottom: 0.3rem; }
+
+    /* ── TIPS STRIP ── */
+    .tips-strip {
+      background: var(--green);
+      color: var(--cream);
+      padding: 2.5rem 2rem;
+    }
+    .tips-inner { max-width: 1100px; margin: 0 auto; }
+    .tips-inner h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #d4f5e5;
+    }
+    .tips-row { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+    .tip-item {
+      flex: 1;
+      min-width: 200px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .tip-emoji { font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .tip-item h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .tip-item p { font-size: 0.82rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: #6a6050;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer strong { color: var(--cream); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .featured-inner { grid-template-columns: 1fr; }
+      .featured-visual { height: 120px; font-size: 4rem; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#"><span>Do</span>ItFree</a>
+  <nav>
+    <a href="#categories">Categories</a>
+    <a href="#guides">Guides</a>
+    <a href="#tips">Tips</a>
+    <a href="#" onclick="alert('Coming soon!')">Submit a Guide</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">100% Free • No Ads • No Paywalls</div>
+  <h1>Learn how to do <em>anything</em><br>without spending a cent.</h1>
+  <p>Practical, step-by-step guides for everyday life — money, food, health, tech, and more.</p>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search: make bread, fix a leak, cut your own hair…" onkeydown="if(event.key==='Enter') handleSearch()" />
+    <button onclick="handleSearch()">Search</button>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div>
+    <h2 class="section-title">Browse by Category</h2>
+    <p class="section-sub">Tap a category to filter guides below</p>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-card" href="#guides" onclick="filterGuides('food')">
+      <div class="cat-icon">🍞</div>
+      <div class="cat-name">Food & Cooking</div>
+      <div class="cat-count">12 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('health')">
+      <div class="cat-icon">🌿</div>
+      <div class="cat-name">Health & Wellness</div>
+      <div class="cat-count">9 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('money')">
+      <div class="cat-icon">💰</div>
+      <div class="cat-name">Money & Budgeting</div>
+      <div class="cat-count">10 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('home')">
+      <div class="cat-icon">🏠</div>
+      <div class="cat-name">Home & Repairs</div>
+      <div class="cat-count">8 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('tech')">
+      <div class="cat-icon">💻</div>
+      <div class="cat-name">Tech & Digital</div>
+      <div class="cat-count">11 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('beauty')">
+      <div class="cat-icon">✂️</div>
+      <div class="cat-name">Beauty & Self-Care</div>
+      <div class="cat-count">7 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('education')">
+      <div class="cat-icon">📚</div>
+      <div class="cat-name">Education & Skills</div>
+      <div class="cat-count">14 guides</div>
+    </a>
+    <a class="cat-card" href="#guides" onclick="filterGuides('all')">
+      <div class="cat-icon">✨</div>
+      <div class="cat-name">View All</div>
+      <div class="cat-count">71 guides</div>
+    </a>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section style="background: var(--warm); padding: 0 0 2rem; border-top: 1.5px solid var(--card-border);">
+  <div class="featured">
+    <h2 class="section-title">Featured Guide</h2>
+    <p class="section-sub">Our most popular how-to this week</p>
+    <div class="featured-inner">
+      <div class="featured-text">
+        <div class="guide-cat">🍞 Food & Cooking</div>
+        <h2>How to Make Sourdough Bread at Home (No-Cost Starter)</h2>
+        <p>Make artisan sourdough from scratch using only flour and water. No yeast to buy — your starter is completely free and keeps forever.</p>
+        <a class="btn-read" href="#" onclick="openArticle('sourdough'); return false;">Read the Guide →</a>
+      </div>
+      <div class="featured-visual">🍞</div>
+    </div>
+  </div>
+</section>
+
+<!-- GUIDES -->
+<section class="guides-section" id="guides">
+  <div class="guides-inner">
+    <h2 class="section-title">All Guides</h2>
+    <p class="section-sub" id="guideSubtitle">Showing all guides — click a category above to filter</p>
+    <div class="guides-grid" id="guidesGrid"></div>
+  </div>
+</section>
+
+<!-- TIPS STRIP -->
+<section class="tips-strip" id="tips">
+  <div class="tips-inner">
+    <h2>💡 Free Resources Around the Web</h2>
+    <div class="tips-row">
+      <div class="tip-item">
+        <div class="tip-emoji">📖</div>
+        <h3>Project Gutenberg</h3>
+        <p>Over 70,000 free ebooks — classics, textbooks, and more. No account needed.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-emoji">🎓</div>
+        <h3>Khan Academy</h3>
+        <p>Free maths, science, economics, and computing courses from beginner to university level.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-emoji">🎨</div>
+        <h3>Canva Free Tier</h3>
+        <p>Design posters, CVs, social posts, and more using hundreds of free templates.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-emoji">🏋️</div>
+        <h3>YouTube Workouts</h3>
+        <p>Search "no equipment workout" on YouTube for thousands of free fitness routines.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-emoji">🌐</div>
+        <h3>Wikipedia</h3>
+        <p>The world's largest free encyclopedia — also available offline via the Kiwix app.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>DoItFree</strong> — Practical guides for doing more with less.</p>
+  <p style="margin-top:0.5rem;">All guides are free forever · No login required · No ads · <a href="#">Contribute a guide</a></p>
+</footer>
+
+<!-- ARTICLE OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeIfBackdrop(event)">
+  <div class="article-modal" id="articleModal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Guide Title</h2>
+      <button class="close-btn" onclick="closeArticle()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  /* ── DATA ── */
+  const guides = [
+    {
+      id: 'sourdough',
+      cat: 'food',
+      emoji: '🍞',
+      title: 'Make Sourdough Bread from Scratch',
+      desc: 'Create a free wild-yeast starter and bake a bakery-quality loaf at home.',
+      steps: 7, difficulty: 'medium',
+      intro: 'Sourdough uses only flour, water, and salt — no store-bought yeast needed. Your starter is a living culture you capture from the air, and it will last indefinitely if fed regularly.',
+      content: [
+        { title: 'Make your starter', body: 'Mix 50g flour + 50g lukewarm water in a clean jar. Cover loosely with cloth and leave at room temperature.' },
+        { title: 'Feed it daily', body: 'Each day for 5–7 days, discard half and add 50g flour + 50g water. It will start bubbling around day 3–4 — that\'s wild yeast activating.' },
+        { title: 'Test if it\'s ready', body: 'Drop a teaspoon of starter into a glass of water. If it floats, your starter is active and ready to bake with.' },
+        { title: 'Make the dough', body: 'Mix 450g flour, 360ml water, 9g salt, and 100g of your active starter. Knead briefly, then rest for 30 minutes.' },
+        { title: 'Stretch and fold', body: 'Every 30 minutes for 2–3 hours, stretch the dough upward and fold it over itself. This builds structure without kneading.' },
+        { title: 'Shape and proof overnight', body: 'Shape into a round, place in a flour-dusted bowl, cover, and refrigerate overnight (8–16 hours). The cold slow-ferments the dough for better flavour.' },
+        { title: 'Bake it', body: 'Preheat your oven to 240°C with a pot inside. Score the top of the dough, drop it into the hot pot with lid on for 20 min, then remove lid for 20 more minutes until deep golden brown.' },
+      ],
+      tip: 'Store leftover starter in the fridge and feed it once a week. A well-maintained starter can last years — or decades.'
+    },
+    {
+      id: 'kimchi',
+      cat: 'food',
+      emoji: '🥬',
+      title: 'How to Make Kimchi at Home',
+      desc: 'Ferment your own probiotic-rich kimchi cheaply using cabbage and pantry staples.',
+      steps: 5, difficulty: 'easy',
+      intro: 'Kimchi is one of the cheapest, healthiest fermented foods you can make. Cabbage, salt, garlic, and chilli are all you need.',
+      content: [
+        { title: 'Salt the cabbage', body: 'Chop a medium napa or regular cabbage into chunks. Toss with 2 tbsp salt, massage well, and leave for 1–2 hours until it wilts and releases water.' },
+        { title: 'Rinse and drain', body: 'Rinse off excess salt, then squeeze the cabbage firmly to remove as much water as possible.' },
+        { title: 'Make the paste', body: 'Blend or mix: 4 garlic cloves, 1 tbsp ginger, 2–4 tbsp chilli flakes (gochugaru is ideal, but any red chilli works), and 1 tsp sugar.' },
+        { title: 'Mix everything', body: 'Combine drained cabbage with the paste and any extras you like: sliced carrots, spring onions, or radish. Mix with gloved hands until everything is evenly coated.' },
+        { title: 'Pack and ferment', body: 'Pack tightly into a clean jar, pressing down until liquid rises above the cabbage. Leave at room temperature for 1–3 days, then refrigerate. It\'s ready to eat immediately but improves over days.' },
+      ],
+      tip: 'If you run out of chilli flakes, even plain fermented cabbage (like sauerkraut) is delicious and equally probiotic.'
+    },
+    {
+      id: 'budget',
+      cat: 'money',
+      emoji: '💰',
+      title: 'Build a Zero-Based Budget in 30 Minutes',
+      desc: 'Assign every rand or cent a job using a free spreadsheet — no app subscription needed.',
+      steps: 5, difficulty: 'easy',
+      intro: 'A zero-based budget means income minus expenses equals zero — every cent is intentionally allocated. You only need a pen and paper, or a free Google Sheet.',
+      content: [
+        { title: 'Write down your monthly income', body: 'List all income sources: salary, grants, casual work, allowances. This is your total available pool.' },
+        { title: 'List fixed expenses first', body: 'Fixed costs come first: rent, transport, phone data, loan repayments, etc. These are non-negotiable.' },
+        { title: 'Allocate flexible spending', body: 'Estimate monthly spend on food, toiletries, clothing. Be honest — check bank statements if unsure.' },
+        { title: 'Add savings as a "bill"', body: 'Treat savings like an expense. Even R50–R100/month counts. Write it in before discretionary spending.' },
+        { title: 'Make it zero', body: 'Subtract all categories from income. If the result is above zero, allocate the rest to savings or debt. If below zero, cut a flexible category.' },
+      ],
+      tip: 'Use Google Sheets (free) to copy your budget template each month. Google also has free budget templates in their template gallery.'
+    },
+    {
+      id: 'haircut',
+      cat: 'beauty',
+      emoji: '✂️',
+      title: 'Cut Your Own Hair at Home',
+      desc: 'Trim and maintain your hair yourself using basic scissors and a hand mirror.',
+      steps: 6, difficulty: 'medium',
+      intro: 'Home haircuts save significant money over time. With patience and the right technique, you can maintain clean, presentable hair indefinitely.',
+      content: [
+        { title: 'Get the right tools', body: 'You need: sharp scissors (fabric or hair scissors are best, avoid kitchen scissors), a fine-tooth comb, two mirrors or a phone propped up behind you, and hair clips.' },
+        { title: 'Start with dry or slightly damp hair', body: 'Dry hair shows your natural texture; damp hair cuts more precisely. For curly hair, cut dry so you can see how it falls naturally.' },
+        { title: 'Section the hair', body: 'Divide your hair into sections using clips. Start at the back, working your way to the front. Working in sections prevents uneven cuts.' },
+        { title: 'Point-cut for natural edges', body: 'Instead of cutting straight across, angle the scissors diagonally and make small snipping cuts into the ends. This creates softer, less blunt results.' },
+        { title: 'Trim little by little', body: 'Cut less than you think you need — you can always cut more, but you can\'t add it back. Do a small test cut, check in the mirror, then continue.' },
+        { title: 'Check and clean up', body: 'Use the second mirror to check the back. Trim any stray hairs, check that both sides match. Clean up the neckline with small snips.' },
+      ],
+      tip: 'YouTube has excellent tutorials specific to your hair type — search "how to trim [your curl type] hair at home" for visual guidance.'
+    },
+    {
+      id: 'wifi',
+      cat: 'tech',
+      emoji: '📶',
+      title: 'Get Free or Low-Cost Internet Access',
+      desc: 'Find free WiFi legally and reduce your data bill using smart strategies.',
+      steps: 5, difficulty: 'easy',
+      intro: 'Internet access doesn\'t have to be expensive. There are multiple strategies for staying connected without a large monthly bill.',
+      content: [
+        { title: 'Use public WiFi strategically', body: 'Libraries, municipal offices, fast food restaurants (McDonald\'s, KFC), and many shopping centres offer free WiFi. Download content while connected, then consume it offline.' },
+        { title: 'Check for community networks', body: 'In South Africa, look for WiFi zones powered by the City\'s free public WiFi programme. Areas like libraries and community centres often have coverage.' },
+        { title: 'Use data-saving browser modes', body: 'Chrome\'s Lite mode and Opera Mini compress pages before loading, reducing data use by up to 90%. Good for browsing on a tight data budget.' },
+        { title: 'Download offline content', body: 'YouTube, Spotify, and Google Maps all allow offline downloading on free plans. Download podcasts, playlists, and maps while on WiFi to use offline.' },
+        { title: 'Explore shared data plans', body: 'Some providers allow data sharing across family members. MTN, Vodacom, and Telkom all offer shared plans that can work out cheaper per person.' },
+      ],
+      tip: 'WhatsApp calls and messages use very little data compared to regular calls and SMS. Use it for all communication when possible.'
+    },
+    {
+      id: 'fitness',
+      cat: 'health',
+      emoji: '🏋️',
+      title: 'Build Fitness at Home with Zero Equipment',
+      desc: 'A complete bodyweight programme you can do in any room, for free, forever.',
+      steps: 6, difficulty: 'medium',
+      intro: 'You don\'t need a gym or any equipment to build real strength and endurance. Bodyweight training, done consistently, builds functional fitness just as effectively.',
+      content: [
+        { title: 'Warm up first (5 min)', body: 'March on the spot, do arm circles, hip rotations, and 10 slow air squats. Warming up prevents injury and improves performance.' },
+        { title: 'Push exercises (chest & arms)', body: 'Push-ups: start on knees if needed. 3 sets of 8–12 reps. Vary width for different muscles — wide for chest, narrow for triceps.' },
+        { title: 'Pull exercises (back & biceps)', body: 'If you have a door frame or low branch, do body rows. Alternatively, backpack rows: fill a bag with books and row it from a table edge.' },
+        { title: 'Lower body', body: 'Squats, lunges, glute bridges, and calf raises. 3 sets of 12–15. For harder versions: single-leg squats, jump squats, Bulgarian split squats.' },
+        { title: 'Core work', body: 'Plank (3 x 20–40 sec), leg raises (3 x 10), bicycle crunches (3 x 15). Rest 30 seconds between sets.' },
+        { title: 'Cool down and stretch (5 min)', body: 'Gentle stretches for hip flexors, hamstrings, chest, and shoulders. Hold each for 30 seconds. This aids recovery and flexibility.' },
+      ],
+      tip: 'Consistency beats intensity. Three 30-minute sessions per week will produce visible results in 6–8 weeks. Track your reps to see progress over time.'
+    },
+    {
+      id: 'leaks',
+      cat: 'home',
+      emoji: '🔧',
+      title: 'Fix a Dripping Tap Without a Plumber',
+      desc: 'Stop a leaking tap yourself using only basic tools — no plumbing experience needed.',
+      steps: 5, difficulty: 'medium',
+      intro: 'A dripping tap wastes thousands of litres of water per year. The most common cause is a worn rubber washer, which costs a few rand to replace yourself.',
+      content: [
+        { title: 'Turn off the water supply', body: 'Find the isolation valve under the sink (a small screw-slot valve on the pipe) and turn it 90° to close. Or shut off the main stopcock.' },
+        { title: 'Remove the tap handle', body: 'Prise off the decorative cover (usually just press or prise), unscrew the screw underneath, and pull off the handle.' },
+        { title: 'Unscrew the headgear', body: 'Use a spanner to unscrew the brass body (called the headgear) from the tap body. Turn anticlockwise. Remove it fully.' },
+        { title: 'Replace the washer', body: 'At the bottom of the headgear is a rubber washer held by a small nut. Replace it with an identical washer from a hardware store (costs a few rand).' },
+        { title: 'Reassemble and test', body: 'Screw the headgear back in, reattach the handle, turn the water back on. The drip should be gone.' },
+      ],
+      tip: 'Take the old washer to the hardware store to match the size exactly. Washers come in different diameters and thicknesses.'
+    },
+    {
+      id: 'learn',
+      cat: 'education',
+      emoji: '🎓',
+      title: 'Teach Yourself Anything for Free Online',
+      desc: 'A guide to the best free learning platforms and how to use them effectively.',
+      steps: 5, difficulty: 'easy',
+      intro: 'A world-class education is now available free on the internet. The challenge is knowing where to look and how to stay consistent.',
+      content: [
+        { title: 'Choose a platform for your goal', body: 'Khan Academy: maths, science, economics. Coursera (audit for free): university courses. YouTube: almost everything. OpenStax: free university textbooks. MIT OpenCourseWare: full university curricula.' },
+        { title: 'Set a specific learning goal', body: '"Learn biology" is too vague. "Complete Khan Academy AP Biology by end of month" is a goal. Write it down with a target date.' },
+        { title: 'Schedule sessions like appointments', body: 'Block 30–60 minutes per day in your calendar. Consistency matters far more than session length. Daily short sessions beat occasional marathon sessions.' },
+        { title: 'Take handwritten notes', body: 'Research consistently shows handwritten notes improve retention compared to typing. Summarize in your own words — don\'t copy verbatim.' },
+        { title: 'Test yourself regularly', body: 'Use practice questions, flashcards (Anki is free), or explain the concept out loud to yourself. Testing yourself is more effective than re-reading.' },
+      ],
+      tip: 'If you\'re studying with limited internet, download content on WiFi and use it offline. Khan Academy, Coursera, and YouTube all support offline viewing on mobile.'
+    },
+  ];
+
+  /* ── RENDER GUIDES ── */
+  function renderGuides(list) {
+    const grid = document.getElementById('guidesGrid');
+    grid.innerHTML = list.map(g => `
+      <div class="guide-card" onclick="openArticle('${g.id}')">
+        <div class="guide-img-placeholder" style="background: ${getBg(g.cat)};">${g.emoji}</div>
+        <div class="guide-body">
+          <div class="guide-cat">${catLabel(g.cat)}</div>
+          <div class="guide-title">${g.title}</div>
+          <div class="guide-desc">${g.desc}</div>
+          <div class="guide-meta">
+            <span class="guide-steps">${g.steps} steps</span>
+            <span class="guide-difficulty">
+              <span class="dot ${g.difficulty}"></span>${g.difficulty}
+            </span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function getBg(cat) {
+    const map = { food:'linear-gradient(135deg,#f5e8c0,#e8d4a0)', health:'linear-gradient(135deg,#d4f0e4,#b8e0c8)', money:'linear-gradient(135deg,#f0ecd0,#e8e0b8)', home:'linear-gradient(135deg,#e8e0d8,#d8d0c4)', tech:'linear-gradient(135deg,#d4e4f0,#b8cce0)', beauty:'linear-gradient(135deg,#f0d8e8,#e0c4d8)', education:'linear-gradient(135deg,#e0d8f0,#c8c0e0)' };
+    return map[cat] || '#eee';
+  }
+  function catLabel(cat) {
+    const map = { food:'🍞 Food & Cooking', health:'🌿 Health & Wellness', money:'💰 Money & Budgeting', home:'🏠 Home & Repairs', tech:'💻 Tech & Digital', beauty:'✂️ Beauty & Self-Care', education:'📚 Education & Skills' };
+    return map[cat] || cat;
+  }
+
+  function filterGuides(cat) {
+    const sub = document.getElementById('guideSubtitle');
+    if (cat === 'all') {
+      renderGuides(guides);
+      sub.textContent = 'Showing all guides';
+    } else {
+      const filtered = guides.filter(g => g.cat === cat);
+      renderGuides(filtered);
+      sub.textContent = `Showing ${filtered.length} guide(s) in ${catLabel(cat)}`;
+    }
+  }
+
+  function handleSearch() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    if (!q) return filterGuides('all');
+    const res = guides.filter(g => g.title.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q) || g.cat.includes(q));
+    renderGuides(res);
+    document.getElementById('guideSubtitle').textContent = res.length ? `${res.length} result(s) for "${q}"` : `No results for "${q}" — try another keyword`;
+    document.getElementById('guides').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ── ARTICLE MODAL ── */
+  function openArticle(id) {
+    const g = guides.find(x => x.id === id);
+    if (!g) return;
+    document.getElementById('modalTitle').textContent = g.title;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="guide-cat">${catLabel(g.cat)}</div>
+      <p class="modal-intro">${g.intro}</p>
+      ${g.content.map((s,i) => `
+        <div class="step">
+          <div class="step-num">${i+1}</div>
+          <div class="step-content">
+            <h3>${s.title}</h3>
+            <p>${s.body}</p>
+          </div>
+        </div>
+      `).join('')}
+      ${g.tip ? `<div class="tip-box"><strong>💡 Pro Tip</strong>${g.tip}</div>` : ''}
+    `;
+    document.getElementById('overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeArticle() {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeIfBackdrop(e) {
+    if (e.target === document.getElementById('overlay')) closeArticle();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeArticle(); });
+
+  /* ── INIT ── */
+  renderGuides(guides);
+</script>
+</body>
+</html>
